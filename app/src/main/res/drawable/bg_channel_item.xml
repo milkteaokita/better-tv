@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="#334155" />
+            <corners android:radius="14dp" />
+            <stroke android:width="3dp" android:color="@color/tv_focus_gold" />
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape>
+            <solid android:color="#263449" />
+            <corners android:radius="14dp" />
+            <stroke android:width="2dp" android:color="@color/tv_live_green" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/tv_item_default" />
+            <corners android:radius="14dp" />
+            <stroke android:width="1dp" android:color="#22FFFFFF" />
+        </shape>
+    </item>
+</selector>

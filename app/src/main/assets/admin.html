@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>好視TV (Better WebTV) 頻道管理</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --card: #151c28;
+    --card2: #1c2638;
+    --border: #2b384e;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --gold: #ffd54f;
+    --blue: #2563eb;
+    --green: #16a34a;
+    --red: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px 14px 96px;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 24px; color: var(--gold); }
+  .subtitle { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-url {
+    font-size: 13px;
+    color: #93c5fd;
+    word-break: break-all;
+    background: #0f1623;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  label { display: block; font-size: 13px; color: var(--muted); margin: 8px 0 4px; }
+  input[type="text"], input[type="url"], input[type="number"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #0d131d;
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+  }
+  input:focus, textarea:focus { border-color: var(--gold); }
+  .row { display: flex; gap: 10px; align-items: center; }
+  .row > .grow { flex: 1; }
+  .btn {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background: #334155;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:active { opacity: 0.85; }
+  .btn-blue { background: var(--blue); }
+  .btn-green { background: var(--green); }
+  .btn-red { background: var(--red); }
+  .btn-gold { background: var(--gold); color: #0b0e14; }
+  .btn-sm { padding: 7px 10px; font-size: 13px; }
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .checkbox-row input { width: 18px; height: 18px; accent-color: var(--gold); }
+
+  .channel-item {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .channel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .logo-preview {
+    width: 72px;
+    height: 44px;
+    border-radius: 8px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    padding: 3px;
+  }
+  .logo-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .badge-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2px;
+  }
+  .channel-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .color-input {
+    width: 48px;
+    height: 38px;
+    padding: 2px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0d131d;
+    cursor: pointer;
+  }
+  .sticky-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(11, 14, 20, 0.94);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    backdrop-filter: blur(8px);
+  }
+  .sticky-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .toast {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+  .toast.ok { display: block; background: rgba(22, 163, 74, 0.22); border: 1px solid #22c55e; color: #bbf7d0; }
+  .toast.err { display: block; background: rgba(220, 38, 38, 0.22); border: 1px solid #ef4444; color: #fecaca; }
+  details summary { cursor: pointer; font-weight: 700; color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>好視TV (Better WebTV) 家人管理後台</h1>
+  <p class="subtitle">設定長輩遙控器的頻道號碼、頻道網頁網址與頻道圖示，儲存後電視會立即更新。</p>
+
+  <div class="card">
+    <div class="card-title">
+      <span>電視目前瀏覽網址</span>
+      <button class="btn btn-sm" type="button" onclick="loadConfig()">重新讀取</button>
+    </div>
+    <div class="status-url" id="currentWebUrl">讀取中…</div>
+    <div style="font-size:13px; color:var(--muted);">
+      小技巧：可在電視切換到「帳號登入模式（開啟遙控器游標）」瀏覽並點進想看的頻道網頁，再用下方各頻道的「帶入電視目前網址」一鍵複製。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>遠端 JSON 自動同步（選填）</span>
+      <button class="btn btn-blue btn-sm" type="button" onclick="syncNow()">立即同步</button>
+    </div>
+    <label for="remoteJsonUrl">遠端 JSON 網址（例如 GitHub Gist Raw 連結）</label>
+    <input id="remoteJsonUrl" type="url" placeholder="https://gist.githubusercontent.com/.../channels.json">
+    <label class="checkbox-row">
+      <input id="autoSyncOnStart" type="checkbox" checked>
+      <span>電視每次開啟 App 時自動同步最新清單</span>
+    </label>
+    <div id="syncToast" class="toast"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>頻道清單（依台號自動排序）</span>
+      <div class="row">
+        <button class="btn btn-sm" type="button" onclick="sortChannelsByNumber()">依台號排序</button>
+        <button class="btn btn-green btn-sm" type="button" onclick="addChannel()">+ 新增頻道</button>
+      </div>
+    </div>
+    <div id="channelList"></div>
+  </div>
+
+  <div class="card">
+    <details>
+      <summary>進階：匯出 / 匯入 JSON（方便複製到 GitHub Gist）</summary>
+      <label for="rawJsonArea">頻道 JSON</label>
+      <textarea id="rawJsonArea" rows="7" placeholder='[{"number": 1, "name": "範例頻道 1", "url": "https://example.com/channel/1"}]'></textarea>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn btn-sm" type="button" onclick="exportToTextarea()">從上方清單產生 JSON</button>
+        <button class="btn btn-blue btn-sm" type="button" onclick="importFromTextarea()">從 JSON 匯入清單</button>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="sticky-bar">
+  <div class="sticky-inner">
+    <div id="saveToast" class="toast" style="margin:0; flex:1;"></div>
+    <button class="btn btn-gold" style="margin-left:auto; padding:12px 22px; font-size:16px;" type="button" onclick="saveAll()">儲存並套用到電視</button>
+  </div>
+</div>
+
+<script>
+let state = {
+  channels: [],
+  remoteJsonUrl: "",
+  autoSyncOnStart: true,
+  currentWebUrl: ""
+};
+
+function showToast(elId, ok, msg) {
+  const el = document.getElementById(elId);
+  el.className = "toast " + (ok ? "ok" : "err");
+  el.textContent = msg;
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+async function loadConfig() {
+  try {
+    const res = await fetch("/api/config", { cache: "no-store" });
+    const data = await res.json();
+    state.channels = Array.isArray(data.channels) ? data.channels : [];
+    state.remoteJsonUrl = data.remoteJsonUrl || "";
+    state.autoSyncOnStart = data.autoSyncOnStart !== false;
+    state.currentWebUrl = data.currentWebUrl || "";
+
+    document.getElementById("remoteJsonUrl").value = state.remoteJsonUrl;
+    document.getElementById("autoSyncOnStart").checked = state.autoSyncOnStart;
+    document.getElementById("currentWebUrl").textContent = state.currentWebUrl || "尚未載入網頁";
+    renderChannels();
+  } catch (e) {
+    showToast("saveToast", false, "無法連線到電視：" + e.message);
+  }
+}
+
+function renderChannels() {
+  const container = document.getElementById("channelList");
+  if (!state.channels.length) {
+    container.innerHTML = '<p style="color:var(--muted);">目前沒有頻道，請點「+ 新增頻道」。</p>';
+    return;
+  }
+  container.innerHTML = state.channels.map((ch, idx) => {
+    const badgeColor = ch.badgeColor || "#1D4ED8";
+    const previewHtml = ch.logoUrl
+      ? `<img src="${escapeHtml(ch.logoUrl)}" alt="${escapeHtml(ch.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+         <div class="badge-preview" style="display:none; background:${escapeHtml(badgeColor)};">${escapeHtml((ch.name || "").slice(0,4))}</div>`
+      : `<div class="badge-preview" style="background:${escapeHtml(badgeColor)};">${escapeHtml((ch.name || "").slice(0,4))}</div>`;
+
+    return `
+      <div class="channel-item">
+        <div class="channel-header">
+          <div class="logo-preview">${previewHtml}</div>
+          <div style="width:90px;">
+            <label style="margin-top:0;">台號</label>
+            <input type="number" min="1" max="9999" value="${escapeHtml(ch.number)}" oninput="updateField(${idx}, 'number', parseInt(this.value || '0', 10))">
+          </div>
+          <div class="grow">
+            <label style="margin-top:0;">頻道名稱</label>
+            <input type="text" value="${escapeHtml(ch.name)}" placeholder="例如：範例頻道 1、新聞台" oninput="updateField(${idx}, 'name', this.value)">
+          </div>
+          <div>
+            <label style="margin-top:0;">底色</label>
+            <input class="color-input" type="color" value="${escapeHtml(badgeColor)}" oninput="updateField(${idx}, 'badgeColor', this.value)">
+          </div>
+        </div>
+        <label>頻道網頁網址</label>
+        <input type="url" value="${escapeHtml(ch.url)}" placeholder="https://example.com/channel/1" oninput="updateField(${idx}, 'url', this.value)">
+        <label>頻道圖示圖片網址（選填，留空會自動顯示高對比台標色塊）</label>
+        <input type="url" value="${escapeHtml(ch.logoUrl || '')}" placeholder="https://.../logo.png 或 .svg" onchange="updateField(${idx}, 'logoUrl', this.value); renderChannels();">
+        <div class="channel-actions">
+          <button class="btn btn-sm" type="button" onclick="useCurrentTvUrl(${idx})">帶入電視目前網址</button>
+          <button class="btn btn-blue btn-sm" type="button" onclick="playOnTv(${idx})">在電視試播</button>
+          <button class="btn btn-red btn-sm" style="margin-left:auto;" type="button" onclick="removeChannel(${idx})">刪除</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function updateField(idx, field, val) {
+  if (!state.channels[idx]) return;
+  state.channels[idx][field] = val;
+}
+
+function addChannel() {
+  const maxNum = state.channels.reduce((m, c) => Math.max(m, Number(c.number) || 0), 0);
+  state.channels.push({
+    id: "ch_" + Date.now(),
+    number: maxNum + 1,
+    name: "",
+    url: "",
+    logoUrl: "",
+    badgeColor: "#1D4ED8"
+  });
+  renderChannels();
+}
+
+function removeChannel(idx) {
+  state.channels.splice(idx, 1);
+  renderChannels();
+}
+
+function sortChannelsByNumber() {
+  state.channels.sort((a, b) => (Number(a.number) || 0) - (Number(b.number) || 0));
+  renderChannels();
+}
+
+async function useCurrentTvUrl(idx) {
+  await loadConfig();
+  if (!state.currentWebUrl) {
+    showToast("saveToast", false, "電視目前沒有網頁網址");
+    return;
+  }
+  state.channels[idx].url = state.currentWebUrl;
+  renderChannels();
+  showToast("saveToast", true, "已帶入電視目前網址（記得按儲存）");
+}
+
+async function playOnTv(idx) {
+  const ch = state.channels[idx];
+  if (!ch || !ch.id) return;
+  await saveAll(true);
+  const res = await fetch("/api/play", {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify({ channelId: ch.id, number: ch.number })
+  });
+  const data = await res.json();
+  if (data.ok) {
+    showToast("saveToast", true, `電視已切換至 ${ch.number} ${ch.name}`);
+  } else {
+    showToast("saveToast", false, data.error || "切換失敗");
+  }
+}
+
+async function saveAll(silent) {
+  sortChannelsByNumber();
+  const payload = {
+    channels: state.channels,
+    remoteJsonUrl: document.getElementById("remoteJsonUrl").value.trim(),
+    autoSyncOnStart: document.getElementById("autoSyncOnStart").checked
+  };
+  try {
+    const res = await fetch("/api/config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      showToast("saveToast", false, data.error || "儲存失敗");
+      return false;
+    }
+    state.channels = data.channels || state.channels;
+    renderChannels();
+    if (!silent) {
+      showToast("saveToast", true, `已儲存 ${data.count} 個頻道並套用到電視！`);
+    }
+    return true;
+  } catch (e) {
+    showToast("saveToast", false, "儲存失敗：" + e.message);
+    return false;
+  }
+}
+
+async function syncNow() {
+  const url = document.getElementById("remoteJsonUrl").value.trim();
+  if (!url) {
+    showToast("syncToast", false, "請先貼上遠端 JSON 網址");
+    return;
+  }
+  showToast("syncToast", true, "同步中…");
+  try {
+    const res = await fetch("/api/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ url })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      showToast("syncToast", false, data.error || "同步失敗");
+      return;
+    }
+    state.channels = data.channels || [];
+    renderChannels();
+    showToast("syncToast", true, data.message || "同步完成！");
+  } catch (e) {
+    showToast("syncToast", false, "同步失敗：" + e.message);
+  }
+}
+
+function exportToTextarea() {
+  sortChannelsByNumber();
+  document.getElementById("rawJsonArea").value = JSON.stringify({ channels: state.channels }, null, 2);
+}
+
+function importFromTextarea() {
+  try {
+    const raw = JSON.parse(document.getElementById("rawJsonArea").value);
+    const list = Array.isArray(raw) ? raw : raw.channels;
+    if (!Array.isArray(list) || !list.length) {
+      showToast("saveToast", false, "JSON 裡沒有有效的頻道陣列");
+      return;
+    }
+    state.channels = list;
+    renderChannels();
+    showToast("saveToast", true, "已匯入清單，請按「儲存並套用到電視」");
+  } catch (e) {
+    showToast("saveToast", false, "JSON 解析失敗：" + e.message);
+  }
+}
+
+loadConfig();
+</script>
+</body>
+</html>

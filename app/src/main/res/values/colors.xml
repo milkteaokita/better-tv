@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tv_bg">#0B0E14</color>
+    <color name="tv_drawer_bg">#EB0F172A</color>
+    <color name="tv_osd_bg">#E6111827</color>
+    <color name="tv_card_bg">#F2161E2E</color>
+    <color name="tv_item_default">#CC1E293B</color>
+    <color name="tv_item_selected">#E6263449</color>
+    <color name="tv_focus_gold">#FFD54F</color>
+    <color name="tv_focus_gold_soft">#33FFD54F</color>
+    <color name="tv_text_primary">#FFFFFF</color>
+    <color name="tv_text_secondary">#CBD5E1</color>
+    <color name="tv_text_muted">#94A3B8</color>
+    <color name="tv_live_green">#22C55E</color>
+    <color name="tv_accent_blue">#38BDF8</color>
+    <color name="tv_danger_red">#EF4444</color>
+    <color name="tv_logo_bg">#1E293B</color>
+    <color name="tv_divider">#33FFFFFF</color>
+</resources>

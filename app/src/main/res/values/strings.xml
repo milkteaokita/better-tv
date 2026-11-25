@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">好視TV</string>
+    <string name="channel_drawer_title">頻道清單</string>
+    <string name="loading_channel">頻道載入中…</string>
+    <string name="osd_hint_bar">▲▼ 換台　◀▶ 頻道清單　OK 重新整理　數字鍵 直撥台號</string>
+    <string name="double_back_exit_hint">再按一次「返回鍵」即可離開好視TV</string>
+    <string name="reloading_channel">正在重新整理目前頻道…</string>
+    <string name="reload_cooldown_hint">剛剛已重新整理，請稍候再試</string>
+    <string name="channel_not_found">找不到第 %1$d 台</string>
+    <string name="live_badge">● 播放中</string>
+
+    <string name="admin_title">家人設定中心</string>
+    <string name="admin_subtitle">請用手機掃描左側 QR Code 管理頻道、圖示與遠端同步網址</string>
+    <string name="admin_lan_hint">手機與電視需連上同一個 Wi-Fi / 區網</string>
+    <string name="admin_btn_login">帳號登入模式（開啟遙控器游標）</string>
+    <string name="admin_btn_sync">立即從遠端網址同步頻道</string>
+    <string name="admin_btn_reload">重新整理目前播放畫面</string>
+    <string name="admin_btn_close">返回看電視</string>
+
+    <string name="login_mode_banner">登入模式：方向鍵移動游標 ｜ OK 鍵點擊 ｜ 按「返回鍵」完成並回到全螢幕電視</string>
+    <string name="sync_no_url">尚未設定遠端同步網址，請先用手機掃描 QR Code 設定</string>
+    <string name="sync_in_progress">正在同步遠端頻道清單…</string>
+    <string name="sync_success">已同步 %1$d 個頻道</string>
+    <string name="sync_failed">同步失敗：%1$s</string>
+    <string name="network_error_hint">網頁暫時無法載入，按 OK 鍵重新整理或 ▲▼ 切換其他頻道</string>
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channelItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_channel_item"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+
+    <TextView
+        android:id="@+id/itemChannelNumber"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/tv_focus_gold"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        tools:text="1" />
+
+    <FrameLayout
+        android:layout_width="88dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_logo_container"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/itemBadgeText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_badge_fallback"
+            android:gravity="center"
+            android:maxLines="2"
+            android:padding="3dp"
+            android:textColor="@color/tv_text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="範例頻道" />
+
+        <ImageView
+            android:id="@+id/itemLogoImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/itemChannelName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/tv_text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="範例頻道 1" />
+
+        <TextView
+            android:id="@+id/itemLiveIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/live_badge"
+            android:textColor="@color/tv_live_green"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+</LinearLayout>

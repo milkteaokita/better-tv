@@ -1,0 +1,28 @@
+{
+  "channels": [
+    {
+      "id": "sample_1",
+      "number": 1,
+      "name": "範例頻道 1",
+      "url": "https://example.com/channel/1",
+      "logoUrl": "",
+      "badgeColor": "#1D4ED8"
+    },
+    {
+      "id": "sample_2",
+      "number": 2,
+      "name": "範例頻道 2",
+      "url": "https://example.com/channel/2",
+      "logoUrl": "",
+      "badgeColor": "#0F766E"
+    },
+    {
+      "id": "sample_3",
+      "number": 3,
+      "name": "範例頻道 3",
+      "url": "https://example.com/channel/3",
+      "logoUrl": "",
+      "badgeColor": "#B91C1C"
+    }
+  ]
+}

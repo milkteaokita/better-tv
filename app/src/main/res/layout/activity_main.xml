@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tv_bg"
+    tools:context=".MainActivity">
+
+    <!-- Layer 1: WebTV WebView -->
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <!-- Layer 2: Native HTML5 Fullscreen Container -->
+    <FrameLayout
+        android:id="@+id/fullscreenContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:visibility="gone" />
+
+    <!-- Layer 3: Virtual Mouse Cursor for Account Login Mode -->
+    <com.betterwebtv.tv.ui.VirtualCursorOverlay
+        android:id="@+id/virtualCursor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/loginModeBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_number_osd"
+        android:paddingStart="24dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="12dp"
+        android:text="@string/login_mode_banner"
+        android:textColor="@color/tv_focus_gold"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Layer 4: Channel Loading Overlay -->
+    <LinearLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_osd_pill"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="40dp"
+        android:paddingTop="28dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="28dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/tv_focus_gold" />
+
+        <TextView
+            android:id="@+id/loadingChannelTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/tv_text_primary"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            tools:text="1 範例頻道 1" />
+
+        <TextView
+            android:id="@+id/loadingStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/loading_channel"
+            android:textColor="@color/tv_text_secondary"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Layer 5: Channel Info OSD (Bottom-Left) -->
+    <LinearLayout
+        android:id="@+id/channelOsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/bg_osd_pill"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="28dp"
+        android:paddingBottom="18dp"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="112dp"
+            android:layout_height="68dp"
+            android:background="@drawable/bg_logo_container"
+            android:padding="6dp">
+
+            <TextView
+                android:id="@+id/osdBadgeText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_badge_fallback"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="4dp"
+                android:textColor="@color/tv_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="範例頻道" />
+
+            <ImageView
+                android:id="@+id/osdLogoImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/osdChannelNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tv_focus_gold"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    tools:text="1" />
+
+                <TextView
+                    android:id="@+id/osdChannelName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:textColor="@color/tv_text_primary"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    tools:text="範例頻道 1" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/osd_hint_bar"
+                android:textColor="@color/tv_text_secondary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Layer 6: Numeric Direct-Dial OSD (Top-Right) -->
+    <LinearLayout
+        android:id="@+id/numberOsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="44dp"
+        android:background="@drawable/bg_number_osd"
+        android:gravity="end"
+        android:minWidth="180dp"
+        android:orientation="vertical"
+        android:paddingStart="28dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="28dp"
+        android:paddingBottom="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/numberOsdDigits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/tv_focus_gold"
+            android:textSize="54sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/numberOsdPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/tv_text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="範例頻道 1" />
+    </LinearLayout>
+
+    <!-- Layer 7: Grandma-Friendly Toast / Double-Back Hint -->
+    <TextView
+        android:id="@+id/toastBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bg_osd_pill"
+        android:paddingStart="28dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="28dp"
+        android:paddingBottom="14dp"
+        android:textColor="@color/tv_text_primary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="再按一次「返回鍵」即可離開好視TV" />
+
+    <!-- Layer 8: Semi-Floating Left Channel Drawer -->
+    <LinearLayout
+        android:id="@+id/channelDrawer"
+        android:layout_width="420dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/bg_drawer"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingStart="32dp"
+        android:paddingTop="32dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="28dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/channel_drawer_title"
+                android:textColor="@color/tv_text_primary"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/drawerCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tv_focus_gold"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="共 3 台" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/tv_divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/channelRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:descendantFocusability="afterDescendants"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="14dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="▲▼ 選擇頻道　OK 播放　◀▶ 關閉"
+            android:textColor="@color/tv_text_muted"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <!-- Layer 9: Family Admin Modal -->
+    <FrameLayout
+        android:id="@+id/adminOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC05080F"
+        android:clickable="true"
+        android:focusable="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="780dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_admin_card"
+            android:orientation="horizontal"
+            android:padding="32dp">
+
+            <!-- Left Column: QR Code & LAN URL -->
+            <LinearLayout
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="232dp"
+                    android:layout_height="232dp"
+                    android:background="@drawable/bg_logo_container"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/adminQrImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/admin_title"
+                        android:scaleType="fitCenter" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/adminServerUrlText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center"
+                    android:textColor="@color/tv_focus_gold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="http://192.168.1.50:8088" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="@string/admin_lan_hint"
+                    android:textColor="@color/tv_text_muted"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Right Column: Family Action Buttons -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/admin_title"
+                    android:textColor="@color/tv_text_primary"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/admin_subtitle"
+                    android:textColor="@color/tv_text_secondary"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/adminSyncStatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/tv_accent_blue"
+                    android:textSize="14sp"
+                    tools:text="目前頻道數：3 台" />
+
+                <Button
+                    android:id="@+id/btnAdminLoginMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_admin_button"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/admin_btn_login"
+                    android:textAllCaps="false"
+                    android:textColor="@color/tv_text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnAdminSyncNow"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_admin_button"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/admin_btn_sync"
+                    android:textAllCaps="false"
+                    android:textColor="@color/tv_text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnAdminReload"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_admin_button"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/admin_btn_reload"
+                    android:textAllCaps="false"
+                    android:textColor="@color/tv_text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnAdminClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_admin_button"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/admin_btn_close"
+                    android:textAllCaps="false"
+                    android:textColor="@color/tv_focus_gold"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

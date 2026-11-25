@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Subtle drop shadow under TV frame -->
+    <path
+        android:fillColor="#44000000"
+        android:pathData="M24,33 h60 a11,11 0 0,1 11,11 v28 a11,11 0 0,1 -11,11 h-60 a11,11 0 0,1 -11,-11 v-28 a11,11 0 0,1 11,-11 z" />
+    <!-- Outer warm gold-amber TV bezel -->
+    <path android:pathData="M23,30 h62 a11,11 0 0,1 11,11 v28 a11,11 0 0,1 -11,11 h-62 a11,11 0 0,1 -11,-11 v-28 a11,11 0 0,1 11,-11 z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="96"
+                android:endY="80"
+                android:startX="12"
+                android:startY="30"
+                android:type="linear">
+                <item android:color="#FFFFE082" android:offset="0.0" />
+                <item android:color="#FFFFB300" android:offset="0.55" />
+                <item android:color="#FFFB8C00" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Inner dark glass screen -->
+    <path android:pathData="M26,33.5 h56 a8,8 0 0,1 8,8 v27 a8,8 0 0,1 -8,8 h-56 a8,8 0 0,1 -8,-8 v-27 a8,8 0 0,1 8,-8 z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="90"
+                android:endY="76.5"
+                android:startX="18"
+                android:startY="33.5"
+                android:type="linear">
+                <item android:color="#FF1E293B" android:offset="0.0" />
+                <item android:color="#FF0F172A" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Glossy top highlight -->
+    <path
+        android:fillColor="#18FFFFFF"
+        android:pathData="M26,33.5 h56 a8,8 0 0,1 8,8 v8 Q54,56 18,49.5 v-8 a8,8 0 0,1 8,-8 z" />
+    <!-- Crisp white play triangle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M45,44.5 Q45,42 47.4,43.3 L66.2,53.3 Q68.6,54.6 66.2,55.9 L47.4,65.9 Q45,67.2 45,64.7 Z" />
+    <!-- Minimalist TV stand -->
+    <path
+        android:fillColor="#FFFFCA28"
+        android:pathData="M44,83.5 h20 a2,2 0 0,1 2,2 v0.5 a2,2 0 0,1 -2,2 h-20 a2,2 0 0,1 -2,-2 v-0.5 a2,2 0 0,1 2,-2 z" />
+</vector>
